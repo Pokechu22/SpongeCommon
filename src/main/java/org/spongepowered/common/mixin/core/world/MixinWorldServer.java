@@ -580,7 +580,7 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
         int i = this.shadow$getGameRules().getInt("randomTickSpeed");
         boolean flag = this.isRaining();
         boolean flag1 = this.isThundering();
-        // this.profiler.startSection("pollingChunks"); // Sponge - Don't use the profiler
+        this.profiler.startSection("pollingChunks");
 
         final PhaseTracker phaseTracker = PhaseTracker.getInstance(); // Sponge - get the cause tracker
 
@@ -588,16 +588,16 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
         for (Iterator<net.minecraft.world.chunk.Chunk> iterator =
              SpongeImplHooks.getChunkIterator((WorldServer) (Object) this); iterator.hasNext(); ) // this.profiler.endSection()) // Sponge - don't use the profiler
         {
-            // this.profiler.startSection("getChunk"); // Sponge - Don't use the profiler
+            this.profiler.startSection("getChunk");
             net.minecraft.world.chunk.Chunk chunk = iterator.next();
             final net.minecraft.world.World world = chunk.getWorld();
             int j = chunk.x * 16;
             int k = chunk.z * 16;
-            // this.profiler.endStartSection("checkNextLight"); // Sponge - Don't use the profiler
+            this.profiler.endStartSection("checkNextLight");
             this.timings.updateBlocksCheckNextLight.startTiming(); // Sponge - Timings
             chunk.enqueueRelightChecks();
             this.timings.updateBlocksCheckNextLight.stopTiming(); // Sponge - Timings
-            // this.profiler.endStartSection("tickChunk"); // Sponge - Don't use the profiler
+            this.profiler.endStartSection("tickChunk");
             this.timings.updateBlocksChunkTick.startTiming(); // Sponge - Timings
             chunk.onTick(false);
             this.timings.updateBlocksChunkTick.stopTiming(); // Sponge - Timings
@@ -606,7 +606,7 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
                 continue;
             }
             // Sponge end
-            // this.profiler.endStartSection("thunder"); // Sponge - Don't use the profiler
+            this.profiler.endStartSection("thunder");
             // Sponge start
             this.timings.updateBlocksThunder.startTiming();
 
@@ -691,7 +691,7 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
 
             this.timings.updateBlocksThunder.stopTiming(); // Sponge - Stop thunder timing
             this.timings.updateBlocksIceAndSnow.startTiming(); // Sponge - Start thunder timing
-            // this.profiler.endStartSection("iceandsnow"); // Sponge - don't use the profiler
+            this.profiler.endStartSection("iceandsnow");
 
             // if (this.rand.nextInt(16) == 0) // Sponge - Rewrite to use our boolean, and forge hook
             if (this.weatherIceAndSnowEnabled && SpongeImplHooks.canDoRainSnowIce(this.provider, chunk) && this.rand.nextInt(16) == 0)
@@ -722,7 +722,7 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
 
             this.timings.updateBlocksIceAndSnow.stopTiming(); // Sponge - Stop ice and snow timing
             this.timings.updateBlocksRandomTick.startTiming(); // Sponge - Start random block tick timing
-            // this.profiler.endStartSection("tickBlocks"); // Sponge - Don't use the profiler
+            this.profiler.endStartSection("tickBlocks");
 
             if (i > 0)
             {
@@ -739,7 +739,7 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
                             int i2 = j1 >> 16 & 15;
                             IBlockState iblockstate = extendedblockstorage.get(k1, i2, l1);
                             Block block = iblockstate.getBlock();
-                            // this.profiler.startSection("randomTick"); // Sponge - Don't use the profiler
+                            this.profiler.startSection("randomTick");
 
                             if (block.getTickRandomly())
                             {
@@ -761,7 +761,7 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
                                 // Sponge end
                             }
 
-                            // this.profiler.endSection(); // Sponge - Don't use the profiler
+                            this.profiler.endSection();
                         }
                     }
                 }
@@ -769,7 +769,7 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
         }
 
         this.timings.updateBlocksRandomTick.stopTiming(); // Sponge - Stop random block timing
-        // this.profiler.endSection(); // Sponge - Don't use the profiler
+        this.profiler.endSection();
         // } // Sponge- Remove unecessary else
     }
 

@@ -599,9 +599,9 @@ public final class PhaseTracker {
         }
         // else { // Sponge - unnecessary formatting
         if (newState.getLightOpacity() != iblockstate.getLightOpacity() || newState.getLightValue() != iblockstate.getLightValue()) {
-            // minecraftWorld.profiler.startSection("checkLight"); // Sponge - we don't need to us the profiler
+            minecraftWorld.profiler.startSection("checkLight");
             minecraftWorld.checkLight(pos);
-            // minecraftWorld.profiler.endSection(); // Sponge - We don't need to use the profiler
+            minecraftWorld.profiler.endSection();
         }
 
         if (spongeFlag.isNotifyClients() && chunk.isPopulated()) {
