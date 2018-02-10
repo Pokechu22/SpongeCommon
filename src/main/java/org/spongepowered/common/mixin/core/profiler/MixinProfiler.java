@@ -30,14 +30,15 @@ import org.spongepowered.asm.mixin.Overwrite;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 @Mixin(Profiler.class)
 public class MixinProfiler {
 
     /**
      * @author gabizou - January 22nd, 2017
-     * @reason Clears out the profiler entirely. Since it's used as a debugging tool
-     * for Mojang, it serves no purpose for production servers and clients.
+     * @reason Clears out the profiler entirely. Since it's a debugging tool,
+     * it's expensive to have it enabled when the user doesn't explicitly want it.
      */
     @Overwrite
     public void clearProfiling() {
@@ -45,17 +46,33 @@ public class MixinProfiler {
 
     /**
      * @author gabizou - January 22nd, 2017
-     * @reason Clears out the profiler entirely. Since it's used as a debugging tool
-     * for Mojang, it serves no purpose for production servers and clients.
+     * @reason Clears out the profiler entirely. Since it's a debugging tool,
+     * it's expensive to have it enabled when the user doesn't explicitly want it.
      */
     @Overwrite
     public void startSection(String name) {
     }
 
     /**
+     * @author pokechu22 - February 9th, 2018
+     * @reason Clears out the profiler entirely. Since it's a debugging tool,
+     * it's expensive to have it enabled when the user doesn't explicitly want it.
+     *
+     * This method (which lacks MCP naming due to its introduction in 1.12.1)
+     * normally evaluates the provided supplier only when profiling is enabled,
+     * avoiding the costs of expensive name look ups (e.g. MC-117087).
+     *
+     * If we're disabling the profiler, we definitely want to disable the normally
+     * expensive call to this supplier.
+     */
+    @Overwrite
+    public void func_194340_a(Supplier<String> supplier) {
+    }
+
+    /**
      * @author gabizou - January 22nd, 2017
-     * @reason Clears out the profiler entirely. Since it's used as a debugging tool
-     * for Mojang, it serves no purpose for production servers and clients.
+     * @reason Clears out the profiler entirely. Since it's a debugging tool,
+     * it's expensive to have it enabled when the user doesn't explicitly want it.
      */
     @Overwrite
     public void endSection() {
@@ -63,8 +80,8 @@ public class MixinProfiler {
 
     /**
      * @author gabizou - January 22nd, 2017
-     * @reason Clears out the profiler entirely. Since it's used as a debugging tool
-     * for Mojang, it serves no purpose for production servers and clients.
+     * @reason Clears out the profiler entirely. Since it's a debugging tool,
+     * it's expensive to have it enabled when the user doesn't explicitly want it.
      */
     @Overwrite
     public List<Profiler.Result> getProfilingData(String profilerName) {
@@ -73,8 +90,8 @@ public class MixinProfiler {
 
     /**
      * @author gabizou - January 22nd, 2017
-     * @reason Clears out the profiler entirely. Since it's used as a debugging tool
-     * for Mojang, it serves no purpose for production servers and clients.
+     * @reason Clears out the profiler entirely. Since it's a debugging tool,
+     * it's expensive to have it enabled when the user doesn't explicitly want it.
      */
     @Overwrite
     public void endStartSection(String name) {
@@ -82,12 +99,12 @@ public class MixinProfiler {
 
     /**
      * @author gabizou - January 22nd, 2017
-     * @reason Clears out the profiler entirely. Since it's used as a debugging tool
-     * for Mojang, it serves no purpose for production servers and clients.
+     * @reason Clears out the profiler entirely. Since it's a debugging tool,
+     * it's expensive to have it enabled when the user doesn't explicitly want it.
      */
     @Overwrite
     public String getNameOfLastSection() {
-        return "[UNKNOWN]";
+        return "[DISABLED]";
     }
 
 }
