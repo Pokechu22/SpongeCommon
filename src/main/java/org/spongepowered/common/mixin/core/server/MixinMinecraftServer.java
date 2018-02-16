@@ -670,6 +670,14 @@ public abstract class MixinMinecraftServer implements Server, ConsoleSource, IMi
         }
         SpongeCommonEventFactory.lastAnimationPacketTick = 0;
         TimingsManager.FULL_SERVER_TICK.stopTiming();
+        if (profiler.profilingEnabled && !profiler.getNameOfLastSection().equals("[UNKNOWN]")) {
+            LOGGER.warn("Extra profiler sections!");
+            String secName;
+            while (!(secName = profiler.getNameOfLastSection()).equals("[UNKNOWN]")) {
+                LOGGER.warn("Extra profiler section: " + secName);
+                profiler.endSection();
+            }
+        }
     }
 
     private int dimensionId;

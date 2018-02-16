@@ -603,6 +603,7 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
             this.timings.updateBlocksChunkTick.stopTiming(); // Sponge - Timings
             // Sponge start - if surrounding neighbors are not loaded, skip
             if (!((IMixinChunk) chunk).areNeighborsLoaded()) {
+                this.profiler.endSection();
                 continue;
             }
             // Sponge end
@@ -766,6 +767,7 @@ public abstract class MixinWorldServer extends MixinWorld implements IMixinWorld
                     }
                 }
             }
+            this.profiler.endSection();
         }
 
         this.timings.updateBlocksRandomTick.stopTiming(); // Sponge - Stop random block timing
